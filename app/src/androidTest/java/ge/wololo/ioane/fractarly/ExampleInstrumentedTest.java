@@ -1,4 +1,4 @@
-package ge.wololo.ioane.usasrulo;
+package ge.wololo.ioane.fractarly;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("ge.wololo.ioane.usasrulo", appContext.getPackageName());
+        assertEquals("ge.wololo.ioane.fractarly", appContext.getPackageName());
     }
 }

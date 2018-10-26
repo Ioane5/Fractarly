@@ -1,4 +1,4 @@
-package ge.wololo.ioane.usasrulo;
+package ge.wololo.ioane.fractarly;
 
 import org.junit.Test;
 
