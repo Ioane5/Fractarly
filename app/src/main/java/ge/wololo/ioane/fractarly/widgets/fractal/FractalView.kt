@@ -3,7 +3,9 @@ package ge.wololo.ioane.fractarly.widgets.fractal
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
+import timber.log.Timber
 
 /**
  * View, that knows how to draw a fractal.
@@ -23,9 +25,24 @@ class FractalView(context: Context, attr: AttributeSet) : View(context, attr) {
             invalidate()
         }
 
+    var fractalWidth: Int = 0
+    var fractalHeight: Int = 0
+    var leftPadding: Float = 0f
+    var topPadding: Float = 0f
+
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        fractalWidth = w - (paddingLeft + paddingRight)
+        fractalHeight = h - (paddingTop + paddingBottom)
+        leftPadding = paddingLeft.toFloat()
+        topPadding = paddingTop.toFloat()
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawBitmap(renderer.generate(), 0f, 0f, null)
+        Timber.d("onDraw: $fractalWidth $fractalHeight")
+        canvas.drawBitmap(renderer.generate(fractalWidth, fractalHeight), leftPadding, topPadding, null)
     }
 
 }

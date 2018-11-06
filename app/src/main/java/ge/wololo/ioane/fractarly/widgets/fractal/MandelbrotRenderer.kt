@@ -5,6 +5,7 @@ import androidx.core.graphics.set
 import ge.wololo.ioane.fractarly.utils.Coordinates
 import ge.wololo.ioane.fractarly.utils.iterator
 import ge.wololo.ioane.fractarly.utils.toCoordinates
+import kotlin.math.floor
 
 
 /**
@@ -12,17 +13,19 @@ import ge.wololo.ioane.fractarly.utils.toCoordinates
  */
 class MandelbrotRenderer : FractalRenderer {
 
-    override fun generate(): Bitmap {
-        val width = 400
-        val height = 400
-        // Defines how many pixels make 1 cm in scale
-        val pixelPerCentimeter = 100f
-        // Top left Pixel on our coordinate
-        val anchorCoordinates = -2f to 1f
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    // Top left Pixel on our coordinate
+    // This value should be modified on Zoom and Drag
+    private var anchorCoordinates: Coordinates = -2f to 1f
+    // Fractal Width in Coordinate System units
+    // Note that this value should be modified on Zoom
+    private var widthSize = 3f
 
+    override fun generate(width: Int, height: Int): Bitmap {
+        val pixelPerUnit = floor(width / widthSize)
+
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         bitmap.iterator().forEach { pixel ->
-            val coordinates = pixel.toCoordinates(anchorCoordinates, pixelPerCentimeter)
+            val coordinates = pixel.toCoordinates(anchorCoordinates, pixelPerUnit)
             val color = coordinates.toMandelbrotColor()
             val (x, y) = pixel
             bitmap[x, y] = color
@@ -36,7 +39,7 @@ class MandelbrotRenderer : FractalRenderer {
      * where c is a complex number, represented by our coordinates
      * So c = (x + iy)
      */
-    fun Coordinates.toMandelbrotColor(): Int {
+    private fun Coordinates.toMandelbrotColor(): Int {
         val maxIteration = 50
         var currIteration = 0
         // c
@@ -51,6 +54,6 @@ class MandelbrotRenderer : FractalRenderer {
             currIteration++
         }
         // TODO make better color transformation
-        return if(currIteration > 25) android.graphics.Color.BLACK else android.graphics.Color.WHITE
+        return if (currIteration > 25) android.graphics.Color.BLACK else android.graphics.Color.WHITE
     }
 }

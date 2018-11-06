@@ -19,5 +19,5 @@ interface FractalRenderer {
     /**
      * TODO add size params, Zoom,
      */
-    fun generate(): Bitmap
+    fun generate(width: Int, height: Int): Bitmap
 }
