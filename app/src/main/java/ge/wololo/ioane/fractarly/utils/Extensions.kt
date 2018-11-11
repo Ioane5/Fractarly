@@ -2,8 +2,8 @@ package ge.wololo.ioane.fractarly.utils
 
 import android.graphics.Bitmap
 
-
-typealias Pixel = Pair<Int, Int>
+data class Coordinates(val x: Float, val y: Float)
+data class Pixel(val x: Int, val y: Int)
 
 /**
  * Creates iterator for Bitmap Pixels.
@@ -15,11 +15,9 @@ fun Bitmap.iterator(): Iterator<Pixel> {
 
         override fun hasNext(): Boolean = currIdx < count
 
-        override fun next(): Pixel = (currIdx % width to currIdx / width).also { currIdx++ }
+        override fun next(): Pixel = Pixel(currIdx % width, currIdx / width).also { currIdx++ }
     }
 }
-
-typealias Coordinates = Pair<Float, Float>
 
 /**
  * Computes, which Coordinate is represented by [this] Pixel
@@ -29,5 +27,5 @@ typealias Coordinates = Pair<Float, Float>
 fun Pixel.toCoordinates(anchor: Coordinates, scale: Float): Coordinates {
     val (x, y) = this
     val (aX, aY) = anchor
-    return aX + (x / scale) to aY - (y / scale)
+    return Coordinates(aX + (x / scale), aY - (y / scale))
 }
